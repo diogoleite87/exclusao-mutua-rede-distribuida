@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  container-1:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: container-1
+    environment:
+      HOSTNAME: container-1
+      IP_SLAVES: "173.26.0.3,173.26.0.4,173.26.0.5"
+      MY_IP: 173.26.0.2
+    networks:
+      app_network:
+        ipv4_address: 173.26.0.2
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./data:/src/data
+
+  container-2:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: container-2
+    environment:
+      HOSTNAME: container-2
+      IP_SLAVES: "173.26.0.2,173.26.0.4,173.26.0.5"
+      MY_IP: 173.26.0.3
+    networks:
+      app_network:
+        ipv4_address: 173.26.0.3
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./data:/src/data
+
+  container-3:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: container-3
+    environment:
+      HOSTNAME: container-3
+      IP_SLAVES: "173.26.0.2,173.26.0.3,173.26.0.5"
+      MY_IP: 173.26.0.4
+    networks:
+      app_network:
+        ipv4_address: 173.26.0.4
+    ports:
+      - "8003:8000"
+    volumes:
+      - ./data:/src/data
+
+  container-4:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: container-4
+    environment:
+      HOSTNAME: container-4
+      IP_SLAVES: "173.26.0.2,173.26.0.3,173.26.0.4"
+      MY_IP: 173.26.0.5
+    networks:
+      app_network:
+        ipv4_address: 173.26.0.5
+    ports:
+      - "8004:8000"
+    volumes:
+      - ./data:/src/data
+
+networks:
+  app_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 173.26.0.0/16
